@@ -4,50 +4,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untuk ISTRIKU💖</title>
+<title>Untuk ISTRIKU 💖</title>
 
 <style>
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  text-align: center;
-  background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+  background: linear-gradient(135deg, #2b2b45, #1a1a2e);
   color: white;
+  text-align: center;
   overflow: hidden;
 }
 
-h1 {
-  margin-top: 40px;
-  font-size: 2.2em;
-}
-
-#name {
-  font-size: 2.5em;
-  color: #ff9ae6;
-  text-shadow: 0 0 10px #ff9ae6;
-  margin-top: 10px;
-}
-
-#slider {
-  width: 220px;
-  height: 220px;
-  margin: 20px auto;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
-}
-
-#slider img {
+/* opening */
+#startScreen {
+  position: fixed;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-#message {
-  margin-top: 20px;
-  font-size: 20px;
-  opacity: 0;
-  transition: opacity 2s;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 button {
@@ -56,16 +34,49 @@ button {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  background: #ff9ae6;
-  color: black;
+  background: pink;
+}
+
+/* main */
+#content {
+  display: none;
+}
+
+#name {
+  font-size: 2.5em;
+  margin-top: 30px;
+  color: #ff9ae6;
+  text-shadow: 0 0 10px #ff9ae6;
+}
+
+/* chat */
+#chat {
   margin-top: 20px;
 }
 
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
+.bubble {
+  background: rgba(255,255,255,0.1);
+  margin: 10px auto;
+  padding: 10px 15px;
+  border-radius: 15px;
+  width: fit-content;
+  max-width: 80%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s;
+}
+
+/* slider */
+#slider {
+  margin-top: 20px;
+}
+
+#slider img {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
 }
 </style>
 
@@ -73,89 +84,74 @@ canvas {
 
 <body>
 
-<h1>🎁 Ada sesuatu untuk ISTRIKU...</h1>
-<button onclick="start()">Buka 💖</button>
-
-<div id="name"></div>
-
-<div id="slider">
-  <img id="slide" src="foto1.jpg">
+<div id="startScreen">
+  <h1>💌 Ada sesuatu untuk ISTRIKU...</h1>
+  <button onclick="start()">Buka 💖</button>
 </div>
 
-<div id="message">
-  🎉 Selamat Ulang Tahun 🎉<br><br>
-  Semoga semua impianmu tercapai,<br>
-  selalu bahagia, dan tetap jadi kamu yang luar biasa 💖
+<div id="content">
+  <div id="name">Untuk ISTRIKU 💖</div>
+
+  <div id="chat"></div>
+
+  <div id="slider">
+    <img id="slide" src="foto1.jpg">
+  </div>
 </div>
 
 <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
-<canvas id="confetti"></canvas>
-
 <script>
-// typing effect
-const text = "Untuk ISTRIKU 💖";
-let i = 0;
+// pesan chat
+const messages = [
+  "Hai kamu 😊",
+  "Hari ini hari spesial ya...",
+  "Aku cuma mau bilang...",
+  "Makasih sudah hadir di hidupku 💖",
+  "Semoga kamu selalu bahagia",
+  "Dan semoga aku bisa terus ada di sampingmu ❤️",
+  "Selamat ulang tahun ya 🎉"
+];
 
-function typeWriter() {
-  if (i < text.length) {
-    document.getElementById("name").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typeWriter, 80);
+let index = 0;
+
+function showMessage() {
+  if (index < messages.length) {
+    const div = document.createElement("div");
+    div.className = "bubble";
+    div.innerText = messages[index];
+    document.getElementById("chat").appendChild(div);
+
+    setTimeout(() => {
+      div.style.opacity = 1;
+      div.style.transform = "translateY(0)";
+    }, 100);
+
+    index++;
+    setTimeout(showMessage, 1500);
   }
 }
 
 // slider foto
-const images = ["foto1.jpg", "foto2.jpg", "foto3.jpg"];
-let index = 0;
+const images = ["foto1.jpg","foto2.jpg","foto3.jpg"];
+let i = 0;
 
-function startSlider() {
+function slider() {
   setInterval(() => {
-    index = (index + 1) % images.length;
-    document.getElementById("slide").src = images[index];
-  }, 2000);
+    i = (i + 1) % images.length;
+    document.getElementById("slide").src = images[i];
+  }, 2500);
 }
 
-// start semua
+// start
 function start() {
-  typeWriter();
-  startSlider();
-  document.getElementById("message").style.opacity = 1;
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("content").style.display = "block";
+
   document.getElementById("music").play();
-  startConfetti();
-}
 
-// confetti
-const canvas = document.getElementById("confetti");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let pieces = [];
-for (let i = 0; i < 150; i++) {
-  pieces.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    size: Math.random() * 5 + 2,
-    speed: Math.random() * 3 + 1
-  });
-}
-
-function startConfetti() {
-  function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    pieces.forEach(p => {
-      p.y += p.speed;
-      if (p.y > canvas.height) p.y = 0;
-
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(p.x, p.y, p.size, p.size);
-    });
-
-    requestAnimationFrame(update);
-  }
-  update();
+  showMessage();
+  slider();
 }
 </script>
 
