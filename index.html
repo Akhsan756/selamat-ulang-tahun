@@ -4,54 +4,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untuk ISTRIKU 💖</title>
+<title>FOR ISTRIKU 💖</title>
 
 <style>
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #2b2b45, #1a1a2e);
+  background: black;
   color: white;
-  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
+  text-align: center;
 }
 
 /* opening */
-#startScreen {
+#start {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: black;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background: black;
 }
 
 button {
   padding: 12px 25px;
-  font-size: 16px;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
   background: pink;
+  cursor: pointer;
 }
 
 /* main */
 #content {
   display: none;
-}
-
-#name {
-  font-size: 2.5em;
-  margin-top: 30px;
-  color: #ff9ae6;
-  text-shadow: 0 0 10px #ff9ae6;
-}
-
-/* chat */
-#chat {
-  margin-top: 20px;
+  padding: 20px;
 }
 
 .bubble {
@@ -66,17 +54,24 @@ button {
   transition: all 0.5s;
 }
 
-/* slider */
-#slider {
+/* foto */
+#photo {
+  width: 220px;
+  border-radius: 15px;
   margin-top: 20px;
+  opacity: 0;
+  transition: opacity 2s;
 }
 
-#slider img {
-  width: 200px;
-  height: 200px;
-  border-radius: 15px;
-  object-fit: cover;
-  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+/* ending */
+#final {
+  margin-top: 20px;
+  display: none;
+}
+
+#final h1 {
+  color: pink;
+  text-shadow: 0 0 10px pink;
 }
 </style>
 
@@ -84,42 +79,58 @@ button {
 
 <body>
 
-<div id="startScreen">
-  <h1>💌 Ada sesuatu untuk ISTRIKU...</h1>
-  <button onclick="start()">Buka 💖</button>
+<div id="start">
+  <h2>aku ada sesuatu buat kamu...</h2>
+  <button onclick="start()">klik pelan ya 💔</button>
 </div>
 
 <div id="content">
-  <div id="name">Untuk ISTRIKU 💖</div>
-
   <div id="chat"></div>
+  <img id="photo" src="foto1.jpg">
 
-  <div id="slider">
-    <img id="slide" src="foto1.jpg">
+  <div id="final">
+    <button onclick="reveal()">klik ini 💖</button>
+    <h1 id="love" style="display:none;">aku sayang kamu ❤️</h1>
   </div>
 </div>
 
 <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
 <script>
-// pesan chat
 const messages = [
-  "Hai kamu 😊",
-  "Hari ini hari spesial ya...",
-  "Aku cuma mau bilang...",
-  "Makasih sudah hadir di hidupku 💖",
-  "Semoga kamu selalu bahagia",
-  "Dan semoga aku bisa terus ada di sampingmu ❤️",
-  "Selamat ulang tahun ya 🎉"
+  "aku ga tau harus mulai dari mana",
+  "tapi aku pengen kamu baca ini sampai akhir ya",
+  "semoga kita menua bersama",
+  "kadang aku mikir wanita didunia ini banyak, tapi tidak semua bisa kuat seperti kamu",
+  "gimana ya kalau aku ga ketemu kamu waktu itu?",
+  "mungkin aku tidak bisa hidup lebih lama",
+  "mungkin semuanya bakal beda",
+  "karena sebagian hidupku ada di kamu",
+  "aku masih inget hal-hal kecil tentang kamu",
+  "cara kamu ketawa",
+  "cara kamu cerita",
+  "kamu yang terbaik buat aku",
+  "dan tanpa sadar",
+  "kamu jadi bagian penting di hidup aku",
+  "tidak akan pernah tergantikan oleh siapapun",
+  "hari ini hari kamu",
+  "dan ini kado spesial buat kamu",
+  "selamat ulang tahun ya 💖",
+  "semoga panjang umur dan makin dewasa",
+  "makasih sudah ada, jangan pernah meninggalkan aku",
+  "sealau menemai aku, susah maupun senang",
+  "aku ga selalu bilang kamu harus selalu memenuhi keinginanku",
+  "tapi kamu selalu ada disisiku dan buat kita bahagia berama selamanya.",
 ];
 
-let index = 0;
+let i = 0;
 
-function showMessage() {
-  if (index < messages.length) {
+function showChat() {
+  if (i < messages.length) {
     const div = document.createElement("div");
     div.className = "bubble";
-    div.innerText = messages[index];
+    div.innerText = messages[i];
+
     document.getElementById("chat").appendChild(div);
 
     setTimeout(() => {
@@ -127,31 +138,37 @@ function showMessage() {
       div.style.transform = "translateY(0)";
     }, 100);
 
-    index++;
-    setTimeout(showMessage, 1500);
+    // vibrate di HP
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+
+    // munculin foto di tengah
+    if (i === 10) {
+      document.getElementById("photo").style.opacity = 1;
+    }
+
+    i++;
+    setTimeout(showChat, 1800);
+  } else {
+    document.getElementById("final").style.display = "block";
   }
 }
 
-// slider foto
-const images = ["foto1.jpg","foto2.jpg","foto3.jpg"];
-let i = 0;
-
-function slider() {
-  setInterval(() => {
-    i = (i + 1) % images.length;
-    document.getElementById("slide").src = images[i];
-  }, 2500);
-}
-
-// start
 function start() {
-  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("start").style.display = "none";
   document.getElementById("content").style.display = "block";
 
   document.getElementById("music").play();
 
-  showMessage();
-  slider();
+  showChat();
+}
+
+function reveal() {
+  document.getElementById("love").style.display = "block";
+  if (navigator.vibrate) {
+    navigator.vibrate([100, 50, 100]);
+  }
 }
 </script>
 
